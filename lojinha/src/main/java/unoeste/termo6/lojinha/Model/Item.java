@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 @Table(name = "item")
 public class Item {
+    @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,6 +22,7 @@ public class Item {
 
     @Column(name = "preco", nullable = false)
     private Double preco;
+
 
     public Item() {
     }
@@ -49,13 +51,13 @@ public class Item {
         this.produto = produto;
     }
 
-    public Venda getVenda() {
-        return venda;
-    }
-
-    public void setVenda(Venda venda) {
-        this.venda = venda;
-    }
+//    public Venda getVenda() {
+//        return venda;
+//    }
+//
+//    public void setVenda(Venda venda) {
+//        this.venda = venda;
+//    }
 
     public Integer getQuantidade() {
         return quantidade;
