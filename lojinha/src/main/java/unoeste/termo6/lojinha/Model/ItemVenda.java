@@ -3,7 +3,7 @@ package unoeste.termo6.lojinha.Model;
 import jakarta.persistence.*;
 
 @Table(name = "item")
-public class Item {
+public class ItemVenda {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +24,11 @@ public class Item {
     private Double preco;
 
 
-    public Item() {
+    public ItemVenda() {
+        this(0L,null,null,0,0D);
     }
 
-    public Item(Long id, Produto produto, Venda venda, Integer quantidade, Double preco) {
+    public ItemVenda(Long id, Produto produto, Venda venda, Integer quantidade, Double preco) {
         this.id = id;
         this.produto = produto;
         this.venda = venda;

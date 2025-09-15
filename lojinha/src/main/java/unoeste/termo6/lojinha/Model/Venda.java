@@ -15,13 +15,13 @@ public class Venda {
     private double total;
 
     @OneToMany(mappedBy = "item")
-    private List<Item> itens;
+    private List<ItemVenda> itens;
 
     @ManyToOne
     @JoinColumn(name = "cliente_cpf", nullable = false)
     private Cliente cliente;
 
-    public Venda(Long id, double total, List<Item> itens, Cliente cliente) {
+    public Venda(Long id, double total, List<ItemVenda> itens, Cliente cliente) {
         this.id = id;
         this.total = total;
         this.itens = itens;
@@ -51,11 +51,11 @@ public class Venda {
         this.total = total;
     }
 
-    public List<Item> getItens() {
+    public List<ItemVenda> getItens() {
         return itens;
     }
 
-    public void setItens(List<Item> itens) {
+    public void setItens(List<ItemVenda> itens) {
         this.itens = itens;
     }
 
