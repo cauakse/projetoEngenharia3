@@ -3,61 +3,28 @@ package unoeste.termo6.lojinha.Model;
 import jakarta.persistence.*;
 import unoeste.termo6.lojinha.Model.possiveisExclusoes.ItemCompra;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Compra {
+@Table(name = "Compra")
+public class Compra extends Comercio{
 
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "total")
-    private Double total;
-
-    @OneToMany(mappedBy = "itemVenda")
-    private List<ItemCompra> itens_compra;
 
     @ManyToOne
     @JoinColumn(name = "fornecedor_cnpj", nullable = false)
     private Fornecedor fornecedor;
 
-    public Compra(Long id, Double total, List<ItemCompra> itens_compra, Fornecedor fornecedor) {
-        this.id = id;
-        this.total = total;
-        this.itens_compra = itens_compra;
+    public Compra(Long id, double total, List<Item> itens, Fornecedor fornecedor) {
+        super(id,total,itens);
         this.fornecedor = fornecedor;
     }
 
-    public Compra(Long id, Double total, Fornecedor fornecedor) {
-        this(id,total,null,fornecedor);
+    public Compra(Long id, double total, Fornecedor fornecedor) {
+        this(id,total,new ArrayList<>(),fornecedor);
     }
 
     public Compra() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Double getTotal() {
-        return total;
-    }
-
-    public void setTotal(Double total) {
-        this.total = total;
-    }
-
-    public List<ItemCompra> getItens_compra() {
-        return itens_compra;
-    }
-
-    public void setItens_compra(List<ItemCompra> itens_compra) {
-        this.itens_compra = itens_compra;
+        this(0L,0,new ArrayList<>(),new Fornecedor());
     }
 
     public Fornecedor getFornecedor() {
