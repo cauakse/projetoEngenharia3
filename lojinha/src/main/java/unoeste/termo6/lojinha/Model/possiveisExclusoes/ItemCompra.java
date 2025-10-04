@@ -1,6 +1,8 @@
-package unoeste.termo6.lojinha.Model;
+package unoeste.termo6.lojinha.Model.possiveisExclusoes;
 
 import jakarta.persistence.*;
+import unoeste.termo6.lojinha.Model.Compra;
+import unoeste.termo6.lojinha.Model.Produto;
 
 public class ItemCompra {
     @Id

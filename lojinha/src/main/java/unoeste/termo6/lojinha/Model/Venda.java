@@ -1,6 +1,7 @@
 package unoeste.termo6.lojinha.Model;
 
 import jakarta.persistence.*;
+import unoeste.termo6.lojinha.Model.possiveisExclusoes.ItemVenda;
 
 import java.util.List;
 

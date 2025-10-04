@@ -1,6 +1,8 @@
-package unoeste.termo6.lojinha.Model;
+package unoeste.termo6.lojinha.Model.possiveisExclusoes;
 
 import jakarta.persistence.*;
+import unoeste.termo6.lojinha.Model.Produto;
+import unoeste.termo6.lojinha.Model.Venda;
 
 @Table(name = "item")
 public class ItemVenda {
