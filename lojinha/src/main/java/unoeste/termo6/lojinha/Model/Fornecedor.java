@@ -2,12 +2,14 @@ package unoeste.termo6.lojinha.Model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Table(name = "fornecedor")
 public class Fornecedor {
 
     @Id
     @Column(name = "cnpj")
-    private String cpf;
+    private String cnpj;
 
     @Column(name = "nome")
     private String nome;
@@ -15,22 +17,27 @@ public class Fornecedor {
     @Column(name = "telefone")
     private String telefone;
 
-    public Fornecedor(String cpf, String nome, String telefone) {
-        this.cpf = cpf;
+    @Column(name = "email")
+    private String email;
+
+
+    public Fornecedor(String cnpj, String nome, String telefone, String email) {
+        this.cnpj = cnpj;
         this.nome = nome;
         this.telefone = telefone;
+        this.email = email;
     }
 
     public Fornecedor() {
-        this("","","");
+        this("","","","");
     }
 
-    public String getCpf() {
-        return cpf;
+    public String getCnpj() {
+        return cnpj;
     }
 
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
     }
 
     public String getNome() {
@@ -47,5 +54,13 @@ public class Fornecedor {
 
     public void setTelefone(String telefone) {
         this.telefone = telefone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
