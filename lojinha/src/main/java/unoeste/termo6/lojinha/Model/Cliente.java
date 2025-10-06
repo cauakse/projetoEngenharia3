@@ -1,11 +1,13 @@
 package unoeste.termo6.lojinha.Model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "cliente")
-public class Cliente {
+@Entity
+public class Cliente implements Observer{
     @Id
     @Column(name = "cpf")
     private String cpf;
@@ -18,6 +20,14 @@ public class Cliente {
 
     @Column(name = "email")
     private String email;
+
+    @ManyToMany(mappedBy = "clientes")
+    private List<Produto> produtoObservados = new ArrayList<>();
+
+    @Override
+    public void atualizar(String mensagem) {
+        System.out.println("Notificação para o cliente " + this.nome + " (" + this.email + "): " + mensagem);
+    }
 
     public Cliente(String cpf, String nome, String telefone, String email) {
         this.cpf = cpf;

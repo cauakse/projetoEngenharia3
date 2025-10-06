@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "venda")
+@Entity
 public class Venda extends Comercio{
 
 

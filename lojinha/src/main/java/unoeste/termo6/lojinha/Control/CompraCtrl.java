@@ -5,10 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import unoeste.termo6.lojinha.Model.*;
 import unoeste.termo6.lojinha.Repository.CompraDao;
+import unoeste.termo6.lojinha.Repository.ProdutoDao;
 
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -16,6 +18,9 @@ public class CompraCtrl extends ComercioCtrl{
 
     @Autowired
     CompraDao compraDao;
+
+    @Autowired
+    ProdutoDao produtoDao;
 
     @Override
     protected ResponseEntity<Object> finalizadoComSucesso(Comercio comercio, String frase) {
@@ -46,5 +51,37 @@ public class CompraCtrl extends ComercioCtrl{
             return null;
         }
 
+    }
+
+    @Override
+    protected boolean verificarEstoque(ArrayList<Item> itens, Comercio cliente) {
+        //verifica se algum item tem estoque zero e vai receber algo, dai notifica os observadores
+        List<Produto> produtos= produtoDao.getAll();
+        for (Item item:itens){
+            int i;
+            for (i = 0; i < produtos.size() && produtos.get(i).getId()!=item.getProduto().getId(); i++);
+            Produto prod= produtos.get(i);
+            if (prod.getQuantidade()==0){
+                prod.notificarObservers();
+                prod.removeObservers();
+                produtoDao.save(prod);
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected boolean atualizarEstoque(List<Item> itens, int multi) {
+        boolean flag=true;
+        int multValor= 1*multi;
+        for (int i = 0; i < itens.size() && flag; i++) {
+            Produto prod = produtoDao.getReferenceById(itens.get(i).getProduto().getId());
+            prod.setQuantidade(prod.getQuantidade()+itens.get(i).getQuantidade()*multValor);
+            if(prod.getQuantidade()>=0)
+                produtoDao.save(prod);
+            else
+                flag=false;
+        }
+        return flag;
     }
 }

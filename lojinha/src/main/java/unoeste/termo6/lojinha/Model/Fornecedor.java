@@ -1,10 +1,9 @@
 package unoeste.termo6.lojinha.Model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Table(name = "fornecedor")
+@Entity
 public class Fornecedor {
 
     @Id

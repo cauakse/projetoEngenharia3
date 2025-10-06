@@ -1,12 +1,12 @@
 package unoeste.termo6.lojinha.Model;
 
 import jakarta.persistence.*;
-import unoeste.termo6.lojinha.Model.possiveisExclusoes.ItemCompra;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Table(name = "Compra")
+@Entity
 public class Compra extends Comercio{
 
 

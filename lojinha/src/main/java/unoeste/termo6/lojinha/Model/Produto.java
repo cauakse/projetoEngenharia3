@@ -2,8 +2,12 @@ package unoeste.termo6.lojinha.Model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Table(name = "produto")
-public class Produto {
+@Entity
+public class Produto implements Sujeito{
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +20,39 @@ public class Produto {
     private Double preco;
     @Column(name = "quantidade", nullable = false)
     private Integer quantidade;
+
+    @ManyToMany
+    @JoinTable(
+            name = "cliente_produto_inscricao",
+            joinColumns = @JoinColumn(name = "produto_id"),
+            inverseJoinColumns = @JoinColumn(name = "cliente_cpf")
+    )
+    private List<Cliente> clientes = new ArrayList<>();
+
+    @Override
+    public void registrarObserver(Observer o) {
+        if (o instanceof Cliente) {
+            clientes.add((Cliente) o);
+        }
+    }
+
+    @Override
+    public void removerObserver(Observer o) {
+        clientes.remove(o);
+    }
+
+    @Override
+    public void removeObservers() {
+        clientes.clear();
+    }
+
+    @Override
+    public void notificarObservers() {
+        String mensagem = "O produto " + this.nome + " está de volta ao estoque!";
+        for (Cliente cliente : clientes) {
+            cliente.atualizar(mensagem);
+        }
+    }
 
     public Produto() {
     }

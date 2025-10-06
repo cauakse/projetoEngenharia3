@@ -1,10 +1,11 @@
 package unoeste.termo6.lojinha.Model;
-
 import jakarta.persistence.*;
 
+@Entity
+@Table(name = "item")
 public class Item {
+
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -14,64 +15,30 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name = "comercio_id", nullable = false)
-    private Compra compra;
+    private Comercio comercio;
 
-    @Column(name = "quantidade", nullable = false)
+    @Column(nullable = false)
     private Integer quantidade;
 
-    @Column(name = "preco", nullable = false)
+    @Column(nullable = false)
     private Double preco;
 
-    public Item(Long id, Produto produto, Compra compra, Integer quantidade, Double preco) {
-        this.id = id;
+    protected Item() {} // Construtor obrigatório pelo JPA
+
+    public Item(Produto produto, Comercio comercio, Integer quantidade, Double preco) {
         this.produto = produto;
-        this.compra = compra;
+        this.comercio = comercio;
         this.quantidade = quantidade;
         this.preco = preco;
     }
 
-    public Item(Produto produto, Compra compra, Integer quantidade, Double preco) {
+    // Getters e setters
+    public Long getId() { return id; }
+    public Produto getProduto() { return produto; }
+    public void setProduto(Produto produto) { this.produto = produto; }
 
-        this(0L,produto,compra,quantidade,preco);
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Produto getProduto() {
-        return produto;
-    }
-
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-
-    public Compra getCompra() {
-        return compra;
-    }
-
-    public void setCompra(Compra compra) {
-        this.compra = compra;
-    }
-
-    public Integer getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(Integer quantidade) {
-        this.quantidade = quantidade;
-    }
-
-    public Double getPreco() {
-        return preco;
-    }
-
-    public void setPreco(Double preco) {
-        this.preco = preco;
-    }
+    public Integer getQuantidade() { return quantidade; }
+    public void setQuantidade(Integer quantidade) { this.quantidade = quantidade; }
+    public Double getPreco() { return preco; }
+    public void setPreco(Double preco) { this.preco = preco; }
 }

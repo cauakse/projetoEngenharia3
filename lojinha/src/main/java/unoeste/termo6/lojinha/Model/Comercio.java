@@ -1,27 +1,24 @@
 package unoeste.termo6.lojinha.Model;
 
-
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
-
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED) // ou SINGLE_TABLE, TABLE_PER_CLASS
 public abstract class Comercio {
 
     @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "total")
+    @Column(name = "total", nullable = false)
     private double total;
 
-    @OneToMany(mappedBy = "item")
-    private List<Item> itens;
+    @OneToMany(mappedBy = "comercio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Item> itens = new ArrayList<>();
+
+    protected Comercio() {}
 
     public Comercio(Long id, double total, List<Item> itens) {
         this.id = id;
@@ -30,9 +27,10 @@ public abstract class Comercio {
     }
 
     public Comercio(Long id, double total) {
-        this(id,total,new ArrayList<>());
+        this(id, total, new ArrayList<>());
     }
 
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -56,4 +54,5 @@ public abstract class Comercio {
     public void setItens(List<Item> itens) {
         this.itens = itens;
     }
+
 }

@@ -1,18 +1,15 @@
 package unoeste.termo6.lojinha.Control;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import unoeste.termo6.lojinha.Model.Cliente;
-import unoeste.termo6.lojinha.Model.Comercio;
-import unoeste.termo6.lojinha.Model.Item;
-import unoeste.termo6.lojinha.Model.Venda;
+import unoeste.termo6.lojinha.Model.*;
+import unoeste.termo6.lojinha.Repository.ProdutoDao;
 import unoeste.termo6.lojinha.Repository.VendaDao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -20,6 +17,9 @@ public class VendaCtrl extends ComercioCtrl {
 
     @Autowired
     VendaDao vendaDao;
+
+    @Autowired
+    ProdutoDao produtoDao;
 
     @Override
     protected ResponseEntity<Object> finalizadoComSucesso(Comercio comercio, String frase) {
@@ -50,5 +50,37 @@ public class VendaCtrl extends ComercioCtrl {
             return null;
         }
 
+    }
+
+    @Override
+    protected boolean verificarEstoque(ArrayList<Item> itens,Comercio cliente) {
+        List<Produto> produtos= produtoDao.getAll();
+        boolean flag=true;
+        for (Item item:itens){
+            int i;
+            for (i = 0; i < produtos.size() && produtos.get(i).getId()!=item.getProduto().getId(); i++);
+            Produto prod= produtos.get(i);
+            if(prod.getQuantidade()<item.getQuantidade()){
+                prod.registrarObserver(((Venda) cliente).getCliente());
+                produtoDao.save(prod);
+                flag=false;
+            }
+        }
+        return flag;
+    }
+
+    @Override
+    protected boolean atualizarEstoque(List<Item> itens, int multi) {
+        boolean flag=true;
+        int multValor= -1*multi;
+        for (int i = 0; i < itens.size() && flag; i++) {
+            Produto prod = produtoDao.getReferenceById(itens.get(i).getProduto().getId());
+            prod.setQuantidade(prod.getQuantidade()+itens.get(i).getQuantidade()*multValor);
+            if(prod.getQuantidade()>=0)
+                produtoDao.save(prod);
+            else
+                flag=false;
+        }
+        return flag;
     }
 }
