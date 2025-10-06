@@ -15,18 +15,23 @@ public abstract class ComercioCtrl {
     @Autowired
     ItemDao itemDao;
 
+
     public final ResponseEntity<Object> gravar(Map<String, Object> dados) {
         double total = Double.parseDouble(dados.get("total").toString());
         ArrayList<Item> itens = (ArrayList<Item>) dados.get("itens");
         Comercio comercio = pegaAtributo(dados, 0L, total, itens);
+        for (Item item : itens) {
+            item.setComercio(comercio);
+        }
         Map<String, Object> resposta = new HashMap<>();
         //verificar se é uma venda e se todos os itens tem estoque, se nao tiver poe o cliente na lista de observadores
         //verificar se é uma compra e se algum item tem estoque negativo, se tiver notifica o cliente que chegou o produto
 
-        if (verificarEstoque(itens,comercio)){
-
-            if (gravarPrincipal(comercio)) {
+            if (verificarEstoque(itens,comercio)){;
+                comercio = gravarPrincipal(comercio);
+            if (comercio!=null) {
                 int i;
+
                 for (i = 0; i < comercio.getItens().size() && itemDao.save(comercio.getItens().get(i)) != null; i++) ;
                 if (i == comercio.getItens().size()){
                     if(atualizarEstoque(comercio.getItens(),1))
@@ -63,7 +68,8 @@ public abstract class ComercioCtrl {
         ArrayList<Item> itens = (ArrayList<Item>) dados.get("itens");
         Comercio comercio = pegaAtributo(dados, id, total, itens);
         Map<String, Object> resposta = new HashMap<>();
-        if (gravarPrincipal(comercio)) { // se tiver ID ele faz update
+        comercio = gravarPrincipal(comercio);
+        if (comercio!=null) { // se tiver ID ele faz update
             int i;
             try {
                 if(atualizarEstoque(comercio.getItens(),-1)){
@@ -102,7 +108,7 @@ public abstract class ComercioCtrl {
 
     protected abstract ResponseEntity<Object> finalizadoComSucesso(Comercio comercio,String frase);
 
-    protected abstract boolean gravarPrincipal(Comercio comercio);
+    protected abstract Comercio gravarPrincipal(Comercio comercio);
 
     protected abstract Comercio pegaAtributo(Map<String, Object> dados, Long id, double total, ArrayList<Item> itens);
 

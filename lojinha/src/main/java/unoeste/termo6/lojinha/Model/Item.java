@@ -1,4 +1,5 @@
 package unoeste.termo6.lojinha.Model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -34,9 +35,12 @@ public class Item {
 
     // Getters e setters
     public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
     public Produto getProduto() { return produto; }
     public void setProduto(Produto produto) { this.produto = produto; }
-
+    @JsonIgnore
+    public Comercio getComercio() { return comercio; }
+    public void setComercio(Comercio comercio) { this.comercio = comercio; }
     public Integer getQuantidade() { return quantidade; }
     public void setQuantidade(Integer quantidade) { this.quantidade = quantidade; }
     public Double getPreco() { return preco; }

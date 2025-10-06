@@ -31,9 +31,10 @@ public class VendaCtrl extends ComercioCtrl {
     }
 
     @Override
-    protected boolean gravarPrincipal(Comercio comercio) {
+    protected Comercio gravarPrincipal(Comercio comercio) {
         Venda venda = (Venda) comercio;
-        return vendaDao.save(venda) != null;
+        venda= vendaDao.save(venda) ;
+        return venda;
     }
 
     @Override
@@ -44,7 +45,11 @@ public class VendaCtrl extends ComercioCtrl {
             String nome= cliente.get("nome").toString();
             String telefone= cliente.get("telefone").toString();
             String email= cliente.get("email").toString();
-            return new Venda(id,total,itens,new Cliente(cpf,nome,telefone,email));
+            Venda venda = new Venda(id,total,itens,new Cliente(cpf,nome,telefone,email));
+
+
+
+            return venda;
         }
         catch (Exception e){
             return null;
